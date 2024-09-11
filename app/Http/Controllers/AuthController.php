@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+// use PhpParser\Node\Stmt\TryCatch;
 
 class AuthController extends Controller
 {
@@ -34,7 +37,14 @@ class AuthController extends Controller
 
         $text_password = $request->input('text_password');
 
-        echo 'ok';
+        try {
+            DB::connection()->getPdo();
+            echo 'Connection is ok!';
+        } catch (\PDOException $e) {
+            echo 'Connection failed ' . $e->getMessage();
+        }
+
+        echo 'fim!';
     }
 
     public function logout()
