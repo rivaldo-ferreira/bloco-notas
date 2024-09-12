@@ -13,12 +13,12 @@
                     <!-- form -->
                     <div class="row justify-content-center">
                         <div class="col-md-10 col-12">
-                            <form action="/loginSubmit" method="post" novalidate>
+                            <form action="loginSubmit" method="post">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="text_username" class="form-label">Username</label>
                                     <input type="email" class="form-control bg-dark text-info" name="text_username"
-                                        value="{{ old('text_username') }}" required>
+                                        value="{{ old('text_username') }}">
                                     {{-- show error --}}
                                     @error('text_username')
                                         <div class="text-danger">{{ $message }}</div>
@@ -27,7 +27,7 @@
                                 <div class="mb-3">
                                     <label for="text_password" class="form-label">Password</label>
                                     <input type="password" class="form-control bg-dark text-info" name="text_password"
-                                        value="{{ old('text_password') }}" required>
+                                        value="{{ old('text_password') }}">
                                     {{-- show error --}}
                                     @error('text_password')
                                         <div class="text-danger">{{ $message }}</div>
@@ -37,6 +37,13 @@
                                     <button type="submit" class="btn btn-secondary w-100">LOGIN</button>
                                 </div>
                             </form>
+
+                            {{-- invalid login  --}}
+                            @if (session('loginError'))
+                                <div class="alert alert-danger text-center">
+                                    {{ session('loginError') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
 
