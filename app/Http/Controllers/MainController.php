@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
 use App\Models\User;
 use App\Services\Operations;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -11,6 +12,8 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class MainController extends Controller
 {
+    // AC 162 357 254 BR ---- correios
+
     public function index()
     {
         // show users
@@ -30,7 +33,36 @@ class MainController extends Controller
 
     public function newNoteSubmit(Request $request)
     {
-        echo 'I´m creating new note!';
+        //validate request
+        $request->validate(
+            [
+                'text_title' => 'required|min:3|max:200',
+                'text_note' => 'required|min:3|max:3000',
+            ],
+            [
+                'text_title.required' => 'Título obrigatório!',
+                'text_title.min' => 'Título com no mínimo de :min caracteres',
+                'text_title.max' => 'Título com no máximo de :max caracteres',
+
+                'text_note.required' => 'Nota obrigatória',
+                'text_note.min' => 'Nota com no mínimo de :min caracteres',
+                'text_note.max' => 'Nota com no máximo de :max caracteres'
+
+            ]
+        );
+
+        //get user id
+        $id = session('user.id');
+
+        //create a new note
+        $note = new Note();
+        $note->user_id = $id;
+        $note->title = $request->text_title;
+        $note->text = $request->text_note;
+        $note->save();
+
+        //redirect home
+        return redirect()->route('home');
     }
 
     public function editNote($id)
